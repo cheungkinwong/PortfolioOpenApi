@@ -8,13 +8,15 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:5173","http://cheungkinportfolioreactclient.runasp.net")
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-                      });
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "https://cheungkinportfolioreactclient.runasp.net" 
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
 });
 
 
