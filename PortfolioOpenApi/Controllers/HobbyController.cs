@@ -33,7 +33,6 @@ public class HobbyController : ControllerBase
         if (existing == null) return NotFound();
 
         existing.Name = updated.Name;
-        existing.Image = updated.Image;
 
         _context.SaveChanges();
         return NoContent();

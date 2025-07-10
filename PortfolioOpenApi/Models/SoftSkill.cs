@@ -3,6 +3,8 @@
 public class SoftSkill
 {
     public int Id { get; set; }
+    public int SectionId { get; set; } = 5;
+    public Section Section { get; set; } = null!;
     public string Name { get; set; } = string.Empty;
-    public string? Image { get; set; }
+    public string? Level { get; set; }
 }

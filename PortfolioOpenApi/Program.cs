@@ -12,7 +12,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173",
-            "https://cheungkinportfolioreactclient.runasp.net" 
+            "http://cheungkinportfolioreactclient.runasp.net" 
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
@@ -37,7 +37,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors(MyAllowSpecificOrigins);
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 

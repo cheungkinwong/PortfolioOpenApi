@@ -3,10 +3,10 @@
 public class Education
 {
     public int Id { get; set; }
+    public int SectionId { get; set; } = 2;
+    public Section Section { get; set; } = null!;
     public string School { get; set; } = string.Empty;
-    public string Degree { get; set; } = string.Empty;
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
-    public string? Image { get; set; }
 }
 

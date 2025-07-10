@@ -33,7 +33,7 @@ public class SoftSkillController : ControllerBase
         if (existing == null) return NotFound();
 
         existing.Name = updated.Name;
-        existing.Image = updated.Image;
+        existing.Level = updated.Level;
 
         _context.SaveChanges();
         return NoContent();

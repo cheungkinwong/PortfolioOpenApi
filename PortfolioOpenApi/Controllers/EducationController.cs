@@ -33,10 +33,8 @@ public class EducationController : ControllerBase
         if (existing == null) return NotFound();
 
         existing.School = updated.School;
-        existing.Degree = updated.Degree;
         existing.StartDate = updated.StartDate;
         existing.EndDate = updated.EndDate;
-        existing.Image = updated.Image;
 
         _context.SaveChanges();
         return NoContent();

@@ -34,10 +34,8 @@ public class WorkExperienceController : ControllerBase
 
         existing.Company = updated.Company;
         existing.Position = updated.Position;
-        existing.Description = updated.Description;
         existing.StartDate = updated.StartDate;
         existing.EndDate = updated.EndDate;
-        existing.Image = updated.Image;
 
         _context.SaveChanges();
         return NoContent();

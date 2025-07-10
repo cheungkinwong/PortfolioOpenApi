@@ -18,14 +18,6 @@ public class SectionController : ControllerBase
     [HttpGet]
     public IActionResult Get() => Ok(_context.Sections.ToList());
 
-    [HttpPost]
-    public IActionResult Create(Section section)
-    {
-        _context.Sections.Add(section);
-        _context.SaveChanges();
-        return CreatedAtAction(nameof(Get), new { id = section.Id }, section);
-    }
-
     [HttpPut("{id}")]
     public IActionResult Update(int id, Section updated)
     {
@@ -36,17 +28,6 @@ public class SectionController : ControllerBase
         section.Description = updated.Description;
         section.Image = updated.Image;
 
-        _context.SaveChanges();
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        var section = _context.Sections.Find(id);
-        if (section == null) return NotFound();
-
-        _context.Sections.Remove(section);
         _context.SaveChanges();
         return NoContent();
     }

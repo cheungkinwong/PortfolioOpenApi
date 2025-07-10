@@ -227,24 +227,22 @@ namespace PortfolioOpenApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Degree")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("School")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
 
                     b.ToTable("Educations");
 
@@ -252,36 +250,32 @@ namespace PortfolioOpenApi.Migrations
                         new
                         {
                             Id = 1,
-                            Degree = "Full-stack Developer",
-                            Image = "vdab-fullstack.png",
                             School = "VDAB",
+                            SectionId = 2,
                             StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            Degree = "Front-end Developer",
                             EndDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Image = "becode.png",
                             School = "BeCode",
+                            SectionId = 2,
                             StartDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            Degree = "DTP-Prepress",
                             EndDate = new DateTime(2011, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Image = "vdab-prepress.png",
                             School = "VDAB",
+                            SectionId = 2,
                             StartDate = new DateTime(2010, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            Degree = "Chemistry",
                             EndDate = new DateTime(2009, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Image = "ap-chemistry.png",
                             School = "AP Hoge School",
+                            SectionId = 2,
                             StartDate = new DateTime(2007, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -294,7 +288,62 @@ namespace PortfolioOpenApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("Hobbies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Bass",
+                            SectionId = 6
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "TTRPG",
+                            SectionId = 6
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Games",
+                            SectionId = 6
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Reading",
+                            SectionId = 6
+                        });
+                });
+
+            modelBuilder.Entity("PortfolioOpenApi.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Link")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -303,32 +352,24 @@ namespace PortfolioOpenApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hobbies");
+                    b.ToTable("Projects");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Image = "bass.png",
-                            Name = "Bass"
+                            Description = "Project1",
+                            Image = "project1.jpg",
+                            Link = "www.github.com/cheungkinwong/memory-game",
+                            Name = "Project1"
                         },
                         new
                         {
                             Id = 2,
-                            Image = "ttrpg.png",
-                            Name = "TTRPG"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Image = "games.png",
-                            Name = "Games"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Image = "reading.png",
-                            Name = "Reading"
+                            Description = "Project2",
+                            Image = "project2.jpg",
+                            Link = "www.github.com/cheungkinwong/memory-game",
+                            Name = "Project2"
                         });
                 });
 
@@ -407,14 +448,19 @@ namespace PortfolioOpenApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Image")
+                    b.Property<string>("Level")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
 
                     b.ToTable("SoftSkills");
 
@@ -422,32 +468,32 @@ namespace PortfolioOpenApi.Migrations
                         new
                         {
                             Id = 1,
-                            Image = "communication.png",
-                            Name = "Communication"
+                            Name = "Communication",
+                            SectionId = 5
                         },
                         new
                         {
                             Id = 2,
-                            Image = "problem-solving.png",
-                            Name = "Problem Solving"
+                            Name = "Problem Solving",
+                            SectionId = 5
                         },
                         new
                         {
                             Id = 3,
-                            Image = "critical-thinking.png",
-                            Name = "Critical Thinking"
+                            Name = "Critical Thinking",
+                            SectionId = 5
                         },
                         new
                         {
                             Id = 4,
-                            Image = "growth.png",
-                            Name = "Growth Mindset"
+                            Name = "Growth Mindset",
+                            SectionId = 5
                         },
                         new
                         {
                             Id = 5,
-                            Image = "detail.png",
-                            Name = "Attention to Detail"
+                            Name = "Attention to Detail",
+                            SectionId = 5
                         });
                 });
 
@@ -459,17 +505,16 @@ namespace PortfolioOpenApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Level")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
 
                     b.ToTable("TechnicalSkills");
 
@@ -477,72 +522,62 @@ namespace PortfolioOpenApi.Migrations
                         new
                         {
                             Id = 1,
-                            Image = "vue.png",
-                            Level = "Advanced",
-                            Name = "Vue.js / Nuxt.js"
+                            Name = "Vue.js / Nuxt.js",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 2,
-                            Image = "react.png",
-                            Level = "Intermediate",
-                            Name = "React"
+                            Name = "React",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 3,
-                            Image = "dotnet.png",
-                            Level = "Advanced",
-                            Name = "C# / .NET"
+                            Name = "C# / .NET",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 4,
-                            Image = "razor.png",
-                            Level = "Intermediate",
-                            Name = "Razor / Blazor"
+                            Name = "Razor / Blazor",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 5,
-                            Image = "htmlcss.png",
-                            Level = "Advanced",
-                            Name = "HTML / CSS"
+                            Name = "HTML / CSS",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 6,
-                            Image = "figma.png",
-                            Level = "Intermediate",
-                            Name = "Figma / Adobe XD"
+                            Name = "Figma / Adobe XD",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 7,
-                            Image = "mssql.png",
-                            Level = "Intermediate",
-                            Name = "MSSQL"
+                            Name = "MSSQL",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 8,
-                            Image = "git.png",
-                            Level = "Intermediate",
-                            Name = "Git / GitHub"
+                            Name = "Git / GitHub",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 9,
-                            Image = "oauth.png",
-                            Level = "Intermediate",
-                            Name = "OAuth / SSO"
+                            Name = "OAuth / SSO",
+                            SectionId = 4
                         },
                         new
                         {
                             Id = 10,
-                            Image = "payments.png",
-                            Level = "Intermediate",
-                            Name = "Stripe / Mollie / Paypal"
+                            Name = "Stripe / Mollie / Paypal",
+                            SectionId = 4
                         });
                 });
 
@@ -558,24 +593,22 @@ namespace PortfolioOpenApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
 
                     b.ToTable("WorkExperiences");
 
@@ -584,30 +617,27 @@ namespace PortfolioOpenApi.Migrations
                         {
                             Id = 1,
                             Company = "ZAPFLOOR",
-                            Description = "Maintained platforms, integrated APIs, handled SSO and payment systems, designed UIs and wireframes.",
                             EndDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Image = "zapfloor.png",
                             Position = "Front-End Developer",
+                            SectionId = 3,
                             StartDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             Company = "Gazelle Printing House",
-                            Description = "Design, layout, Adobe Suite, and prepress operations.",
                             EndDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Image = "gazelle.png",
                             Position = "Prepress Coordinator",
+                            SectionId = 3,
                             StartDate = new DateTime(2011, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             Company = "Umicore",
-                            Description = "Quality control and analytics in chemistry lab.",
                             EndDate = new DateTime(2009, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Image = "umicore.png",
                             Position = "Lab Technician",
+                            SectionId = 3,
                             StartDate = new DateTime(2007, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -661,6 +691,74 @@ namespace PortfolioOpenApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PortfolioOpenApi.Models.Education", b =>
+                {
+                    b.HasOne("PortfolioOpenApi.Models.Section", "Section")
+                        .WithMany("Educations")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("PortfolioOpenApi.Models.Hobby", b =>
+                {
+                    b.HasOne("PortfolioOpenApi.Models.Section", "Section")
+                        .WithMany("Hobbies")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("PortfolioOpenApi.Models.SoftSkill", b =>
+                {
+                    b.HasOne("PortfolioOpenApi.Models.Section", "Section")
+                        .WithMany("SoftSkills")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("PortfolioOpenApi.Models.TechnicalSkill", b =>
+                {
+                    b.HasOne("PortfolioOpenApi.Models.Section", "Section")
+                        .WithMany("TechnicalSkills")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("PortfolioOpenApi.Models.WorkExperience", b =>
+                {
+                    b.HasOne("PortfolioOpenApi.Models.Section", "Section")
+                        .WithMany("WorkExperiences")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("PortfolioOpenApi.Models.Section", b =>
+                {
+                    b.Navigation("Educations");
+
+                    b.Navigation("Hobbies");
+
+                    b.Navigation("SoftSkills");
+
+                    b.Navigation("TechnicalSkills");
+
+                    b.Navigation("WorkExperiences");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PortfolioOpenApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initiate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,34 +53,19 @@ namespace PortfolioOpenApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Educations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    School = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Degree = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Educations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Hobbies",
+                name: "Projects",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Hobbies", x => x.Id);
+                    table.PrimaryKey("PK_Projects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,53 +81,6 @@ namespace PortfolioOpenApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sections", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SoftSkills",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SoftSkills", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TechnicalSkills",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Level = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TechnicalSkills", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkExperiences",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkExperiences", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,26 +189,119 @@ namespace PortfolioOpenApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Educations",
-                columns: new[] { "Id", "Degree", "EndDate", "Image", "School", "StartDate" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "Educations",
+                columns: table => new
                 {
-                    { 1, "Full-stack Developer", null, "vdab-fullstack.png", "VDAB", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, "Front-end Developer", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "becode.png", "BeCode", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, "DTP-Prepress", new DateTime(2011, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "vdab-prepress.png", "VDAB", new DateTime(2010, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, "Chemistry", new DateTime(2009, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "ap-chemistry.png", "AP Hoge School", new DateTime(2007, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SectionId = table.Column<int>(type: "int", nullable: false),
+                    School = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Educations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Educations_Sections_SectionId",
+                        column: x => x.SectionId,
+                        principalTable: "Sections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hobbies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SectionId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hobbies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Hobbies_Sections_SectionId",
+                        column: x => x.SectionId,
+                        principalTable: "Sections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SoftSkills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SectionId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SoftSkills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SoftSkills_Sections_SectionId",
+                        column: x => x.SectionId,
+                        principalTable: "Sections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TechnicalSkills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SectionId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TechnicalSkills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TechnicalSkills_Sections_SectionId",
+                        column: x => x.SectionId,
+                        principalTable: "Sections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkExperiences",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SectionId = table.Column<int>(type: "int", nullable: false),
+                    Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkExperiences", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkExperiences_Sections_SectionId",
+                        column: x => x.SectionId,
+                        principalTable: "Sections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Hobbies",
-                columns: new[] { "Id", "Image", "Name" },
+                table: "Projects",
+                columns: new[] { "Id", "Description", "Image", "Link", "Name" },
                 values: new object[,]
                 {
-                    { 1, "bass.png", "Bass" },
-                    { 2, "ttrpg.png", "TTRPG" },
-                    { 3, "games.png", "Games" },
-                    { 4, "reading.png", "Reading" }
+                    { 1, "Project1", "project1.jpg", "www.github.com/cheungkinwong/memory-game", "Project1" },
+                    { 2, "Project2", "project2.jpg", "www.github.com/cheungkinwong/memory-game", "Project2" }
                 });
 
             migrationBuilder.InsertData(
@@ -287,42 +318,64 @@ namespace PortfolioOpenApi.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "SoftSkills",
-                columns: new[] { "Id", "Image", "Name" },
+                table: "Educations",
+                columns: new[] { "Id", "EndDate", "School", "SectionId", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, "communication.png", "Communication" },
-                    { 2, "problem-solving.png", "Problem Solving" },
-                    { 3, "critical-thinking.png", "Critical Thinking" },
-                    { 4, "growth.png", "Growth Mindset" },
-                    { 5, "detail.png", "Attention to Detail" }
+                    { 1, null, "VDAB", 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "BeCode", 2, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2011, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "VDAB", 2, new DateTime(2010, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2009, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "AP Hoge School", 2, new DateTime(2007, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Hobbies",
+                columns: new[] { "Id", "Name", "SectionId" },
+                values: new object[,]
+                {
+                    { 1, "Bass", 6 },
+                    { 2, "TTRPG", 6 },
+                    { 3, "Games", 6 },
+                    { 4, "Reading", 6 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SoftSkills",
+                columns: new[] { "Id", "Level", "Name", "SectionId" },
+                values: new object[,]
+                {
+                    { 1, null, "Communication", 5 },
+                    { 2, null, "Problem Solving", 5 },
+                    { 3, null, "Critical Thinking", 5 },
+                    { 4, null, "Growth Mindset", 5 },
+                    { 5, null, "Attention to Detail", 5 }
                 });
 
             migrationBuilder.InsertData(
                 table: "TechnicalSkills",
-                columns: new[] { "Id", "Image", "Level", "Name" },
+                columns: new[] { "Id", "Name", "SectionId" },
                 values: new object[,]
                 {
-                    { 1, "vue.png", "Advanced", "Vue.js / Nuxt.js" },
-                    { 2, "react.png", "Intermediate", "React" },
-                    { 3, "dotnet.png", "Advanced", "C# / .NET" },
-                    { 4, "razor.png", "Intermediate", "Razor / Blazor" },
-                    { 5, "htmlcss.png", "Advanced", "HTML / CSS" },
-                    { 6, "figma.png", "Intermediate", "Figma / Adobe XD" },
-                    { 7, "mssql.png", "Intermediate", "MSSQL" },
-                    { 8, "git.png", "Intermediate", "Git / GitHub" },
-                    { 9, "oauth.png", "Intermediate", "OAuth / SSO" },
-                    { 10, "payments.png", "Intermediate", "Stripe / Mollie / Paypal" }
+                    { 1, "Vue.js / Nuxt.js", 4 },
+                    { 2, "React", 4 },
+                    { 3, "C# / .NET", 4 },
+                    { 4, "Razor / Blazor", 4 },
+                    { 5, "HTML / CSS", 4 },
+                    { 6, "Figma / Adobe XD", 4 },
+                    { 7, "MSSQL", 4 },
+                    { 8, "Git / GitHub", 4 },
+                    { 9, "OAuth / SSO", 4 },
+                    { 10, "Stripe / Mollie / Paypal", 4 }
                 });
 
             migrationBuilder.InsertData(
                 table: "WorkExperiences",
-                columns: new[] { "Id", "Company", "Description", "EndDate", "Image", "Position", "StartDate" },
+                columns: new[] { "Id", "Company", "EndDate", "Position", "SectionId", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, "ZAPFLOOR", "Maintained platforms, integrated APIs, handled SSO and payment systems, designed UIs and wireframes.", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "zapfloor.png", "Front-End Developer", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, "Gazelle Printing House", "Design, layout, Adobe Suite, and prepress operations.", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "gazelle.png", "Prepress Coordinator", new DateTime(2011, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, "Umicore", "Quality control and analytics in chemistry lab.", new DateTime(2009, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "umicore.png", "Lab Technician", new DateTime(2007, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, "ZAPFLOOR", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Front-End Developer", 3, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "Gazelle Printing House", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Prepress Coordinator", 3, new DateTime(2011, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, "Umicore", new DateTime(2009, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lab Technician", 3, new DateTime(2007, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -363,6 +416,31 @@ namespace PortfolioOpenApi.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Educations_SectionId",
+                table: "Educations",
+                column: "SectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hobbies_SectionId",
+                table: "Hobbies",
+                column: "SectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoftSkills_SectionId",
+                table: "SoftSkills",
+                column: "SectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TechnicalSkills_SectionId",
+                table: "TechnicalSkills",
+                column: "SectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkExperiences_SectionId",
+                table: "WorkExperiences",
+                column: "SectionId");
         }
 
         /// <inheritdoc />
@@ -390,7 +468,7 @@ namespace PortfolioOpenApi.Migrations
                 name: "Hobbies");
 
             migrationBuilder.DropTable(
-                name: "Sections");
+                name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "SoftSkills");
@@ -406,6 +484,9 @@ namespace PortfolioOpenApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Sections");
         }
     }
 }
