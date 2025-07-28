@@ -5,15 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
-using Microsoft.IdentityModel.Logging;
-IdentityModelEventSource.ShowPII = true;
-IdentityModelEventSource.LogCompleteSecurityArtifact = true;
-
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
-
-
 
 builder.Services.AddAuthentication(options =>
 {
@@ -24,77 +18,26 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenHandlers.Clear();
     options.TokenHandlers.Add(new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler());
-
-    Console.WriteLine("[DEBUG] JWT Bearer middleware configured");
-    Console.WriteLine($"[DEBUG] Issuer: {config["Jwt:Issuer"]}");
-    Console.WriteLine($"[DEBUG] Audience: {config["Jwt:Audience"]}");
-    Console.WriteLine($"[DEBUG] Key length: {config["Jwt:Key"]?.Length ?? 0}");
-
-
-
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = false,
-        ValidateIssuerSigningKey = false,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         ValidIssuer = config["Jwt:Issuer"],
         ValidAudience = config["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
         RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
         NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
         ClockSkew = TimeSpan.FromMinutes(5),
-        RequireExpirationTime = false,
+        RequireExpirationTime = true,
         ValidateActor = false
     };
 
     options.Events = new JwtBearerEvents
     {
-        OnMessageReceived = context =>
-        {
-            var authHeader = context.Request.Headers["Authorization"].ToString();
-            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
-            {
-                var token = authHeader.Substring("Bearer ".Length).Trim();
-
-                try
-                {
-                    // Use legacy handler directly for validation
-                    var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-                    var validationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = false,
-                        ValidateIssuerSigningKey = false,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!))
-                    };
-
-                    SecurityToken validatedToken;
-                    var principal = handler.ValidateToken(token, validationParameters, out validatedToken);
-
-                    // Bypass the middleware entirely and set user manually
-                    context.Principal = principal;
-                    context.Success();
-                    Console.WriteLine("[DEBUG] Manual validation successful!");
-                    return Task.CompletedTask;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[DEBUG] Manual validation failed: {ex.Message}");
-                }
-                context.Token = token;
-            }
-
-            // If manual validation fails, let the middleware try
-   
-            return Task.CompletedTask;
-        },
         OnAuthenticationFailed = context =>
         {
             Console.WriteLine($"[ERROR] Authentication failed: {context.Exception.Message}");
