@@ -69,4 +69,62 @@ public class ProjectController : ControllerBase
         _context.SaveChanges();
         return NoContent();
     }
+
+    [HttpPost("{id}/upload")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UploadImage(int id, IFormFile file, [FromForm] string altText, [FromServices] IWebHostEnvironment env)
+    {
+        var project = _context.Projects.Find(id);
+        if (project == null) return NotFound();
+
+        if (file == null || file.Length == 0)
+            return BadRequest("No file uploaded.");
+
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+        if (!allowedExtensions.Contains(extension))
+            return BadRequest("Unsupported file type.");
+
+        if (file.Length > 5 * 1024 * 1024)
+            return BadRequest("File too large (max 5 MB).");
+
+        string uploadsFolder = Path.Combine(
+            env.IsDevelopment() ? Directory.GetCurrentDirectory() : env.WebRootPath,
+            "images");
+
+        Directory.CreateDirectory(uploadsFolder);
+
+        if (!string.IsNullOrEmpty(project.Image))
+        {
+            var oldImageRelativePath = project.Image.TrimStart('/');
+            var oldPath = Path.Combine(uploadsFolder, oldImageRelativePath.Replace("images/", ""));
+            if (System.IO.File.Exists(oldPath))
+            {
+                System.IO.File.Delete(oldPath);
+            }
+        }
+
+        var uniqueFileName = $"project-{id}-{Guid.NewGuid()}{extension}";
+        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        project.Image = $"/images/{uniqueFileName}";
+        project.AltText = altText;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            project.Id,
+            image = project.Image,
+            altText = project.AltText
+        });
+    }
+
+
 }

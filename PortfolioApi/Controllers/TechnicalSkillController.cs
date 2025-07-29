@@ -35,6 +35,9 @@ public class TechnicalSkillController : ControllerBase
 
     public IActionResult Create(TechnicalSkill skill)
     {
+        skill.Id = 0;
+        skill.SectionId = 4;
+        skill.Section = null;
         _context.TechnicalSkills.Add(skill);
         _context.SaveChanges();
         return CreatedAtAction(nameof(Get), new { id = skill.Id }, skill);

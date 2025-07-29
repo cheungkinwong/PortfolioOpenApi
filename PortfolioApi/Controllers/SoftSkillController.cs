@@ -35,6 +35,9 @@ public class SoftSkillController : ControllerBase
 
     public IActionResult Create(SoftSkill skill)
     {
+        skill.Id = 0;
+        skill.SectionId = 5;
+        skill.Section = null;
         _context.SoftSkills.Add(skill);
         _context.SaveChanges();
         return CreatedAtAction(nameof(Get), new { id = skill.Id }, skill);

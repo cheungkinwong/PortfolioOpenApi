@@ -6,6 +6,7 @@ public class Section
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
     public string? Image { get; set; }
+    public string? AltText { get; set; }
 
     public ICollection<WorkExperience> WorkExperiences { get; set; } = new List<WorkExperience>();
     public ICollection<Education> Educations { get; set; } = new List<Education>();

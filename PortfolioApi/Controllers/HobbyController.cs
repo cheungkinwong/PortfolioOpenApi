@@ -35,6 +35,9 @@ public class HobbyController : ControllerBase
 
     public IActionResult Create(Hobby hobby)
     {
+        hobby.Id = 0;
+        hobby.SectionId = 6;
+        hobby.Section = null;
         _context.Hobbies.Add(hobby);
         _context.SaveChanges();
         return CreatedAtAction(nameof(Get), new { id = hobby.Id }, hobby);

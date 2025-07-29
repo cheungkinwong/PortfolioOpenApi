@@ -8,4 +8,5 @@ public class Project
     public string Description { get; set; } = string.Empty;
     public string? Link { get; set; }
     public string? Image { get; set; }
+    public string? AltText { get; set; }
 }

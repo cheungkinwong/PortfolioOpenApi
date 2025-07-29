@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using PortfolioApi.Controllers;
 using PortfolioApi.Models;
 
 namespace PortfolioApi.Controllers;
@@ -11,12 +9,10 @@ namespace PortfolioApi.Controllers;
 public class WorkExperienceController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<WorkExperienceController> _logger;
 
-    public WorkExperienceController(ApplicationDbContext context, ILogger<WorkExperienceController> logger)
+    public WorkExperienceController(ApplicationDbContext context)
     {
         _context = context;
-        _logger = logger;
     }
 
     [HttpGet]
@@ -38,6 +34,9 @@ public class WorkExperienceController : ControllerBase
 
     public IActionResult Create(WorkExperience experience)
     {
+        experience.Id = 0;
+        experience.SectionId = 3;
+        experience.Section = null;
         _context.WorkExperiences.Add(experience);
         _context.SaveChanges();
         return CreatedAtAction(nameof(Get), new { id = experience.Id }, experience);
@@ -48,11 +47,9 @@ public class WorkExperienceController : ControllerBase
 
     public IActionResult Update(int id, WorkExperience updated)
     {
-        _logger.LogInformation("Attempting to update WorkExperience with ID: {Id}", id);
         var existing = _context.WorkExperiences.Find(id);
         if (existing == null)
         {
-            _logger.LogWarning("WorkExperience with ID {Id} not found", id);
             return NotFound();
         }
         existing.Company = updated.Company;
@@ -61,7 +58,6 @@ public class WorkExperienceController : ControllerBase
         existing.EndDate = updated.EndDate;
 
         _context.SaveChanges();
-        _logger.LogInformation("Successfully updated WorkExperience with ID: {Id}", id);
         return NoContent();
     }
 

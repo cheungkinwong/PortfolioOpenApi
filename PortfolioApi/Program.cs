@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -82,22 +83,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-
-string Base64UrlDecode(string input)
-{
-    int paddingLength = input.Length % 4;
-    string padded = paddingLength switch
-    {
-        2 => input + "==",
-        3 => input + "=",
-        _ => input
-    };
-
-    padded = padded.Replace('-', '+').Replace('_', '/');
-    var bytes = Convert.FromBase64String(padded);
-    return Encoding.UTF8.GetString(bytes);
-}
-
 builder.Services.AddAuthorization();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -109,7 +94,9 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
             "http://localhost:5173",
             "http://cheungkinportfolioreactclient.runasp.net",
-            "http://localhost:5273"
+            "http://localhost:5273",
+            "http://cheungkinportfolioapi.runasp.net",
+            "http://cheungkinportfoliovueclient.runasp.net"
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
@@ -125,12 +112,6 @@ builder.Services.AddIdentityCore<ApplicationUser>()
     .AddSignInManager<SignInManager<ApplicationUser>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-
-//builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
-
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -169,18 +150,17 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseCors(MyAllowSpecificOrigins);
+app.UseStaticFiles();
+var imageFolder = Path.Combine(Directory.GetCurrentDirectory(), "images");
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imageFolder),
+    RequestPath = "/images"
+});
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
-app.Use(async (context, next) =>
-{
-    var logger = context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger("RequestLogger");
-    logger.LogInformation("Incoming {Method} request to {Path}", context.Request.Method, context.Request.Path);
-    await next.Invoke();
-});
-
 
 app.Run();
 public partial class Program { }

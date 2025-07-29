@@ -35,6 +35,9 @@ public class EducationController : ControllerBase
 
     public IActionResult Create(Education education)
     {
+        education.Id = 0;
+        education.SectionId = 2;
+        education.Section = null;
         _context.Educations.Add(education);
         _context.SaveChanges();
         return CreatedAtAction(nameof(Get), new { id = education.Id }, education);
