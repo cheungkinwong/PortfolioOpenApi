@@ -93,10 +93,10 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173",
-            "http://cheungkinportfolioreactclient.runasp.net",
             "http://localhost:5273",
             "http://cheungkinportfolioapi.runasp.net",
-            "http://cheungkinportfoliovueclient.runasp.net"
+            "http://cheungkinportfoliovueclient.runasp.net",
+            "http://cheungkinportfolioreactclient.runasp.net"  
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
@@ -150,13 +150,17 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseCors(MyAllowSpecificOrigins);
-app.UseStaticFiles();
 var imageFolder = Path.Combine(Directory.GetCurrentDirectory(), "images");
+if (!Directory.Exists(imageFolder))
+{
+    Directory.CreateDirectory(imageFolder);
+}
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(imageFolder),
     RequestPath = "/images"
 });
+
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

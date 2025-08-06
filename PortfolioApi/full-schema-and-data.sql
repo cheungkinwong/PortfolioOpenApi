@@ -297,6 +297,63 @@ SELECT @@ROWCOUNT;
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
 VALUES (N'20250714133143_seedpasswordhash', N'9.0.6');
 
+ALTER TABLE [Sections] ADD [AltText] nvarchar(max) NULL;
+
+ALTER TABLE [Projects] ADD [AltText] nvarchar(max) NULL;
+
+UPDATE [AspNetUsers] SET [ConcurrencyStamp] = N'1fd8645c-4381-43f4-a319-879127a91671'
+WHERE [Id] = N'00000000-0000-0000-0000-000000000001';
+SELECT @@ROWCOUNT;
+
+
+UPDATE [AspNetUsers] SET [ConcurrencyStamp] = N'b795b41d-8b1a-4686-9c0a-eab1f0ea25e8'
+WHERE [Id] = N'00000000-0000-0000-0000-000000000002';
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Projects] SET [AltText] = NULL
+WHERE [Id] = 1;
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Projects] SET [AltText] = NULL
+WHERE [Id] = 2;
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Sections] SET [AltText] = NULL
+WHERE [Id] = 1;
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Sections] SET [AltText] = NULL
+WHERE [Id] = 2;
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Sections] SET [AltText] = NULL
+WHERE [Id] = 3;
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Sections] SET [AltText] = NULL
+WHERE [Id] = 4;
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Sections] SET [AltText] = NULL
+WHERE [Id] = 5;
+SELECT @@ROWCOUNT;
+
+
+UPDATE [Sections] SET [AltText] = NULL
+WHERE [Id] = 6;
+SELECT @@ROWCOUNT;
+
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250729085637_AddSectionImageFields', N'9.0.6');
+
 COMMIT;
 GO
 
