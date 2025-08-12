@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PortfolioApi.Models;
 
@@ -29,16 +30,18 @@ namespace PortfolioApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.Username);
+            var normalizedUsername = request.Username.ToUpperInvariant();
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == normalizedUsername);
+
             if (user == null)
             {
-                return Unauthorized("Invalid username or password");
+                return NotFound($"User with normalized username '{normalizedUsername}' not found");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
             if (!result.Succeeded)
             {
-                return Unauthorized("Invalid username or password");
+                return Unauthorized($"Invalid username or password - password check failed. {result}");
             }
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -51,6 +54,21 @@ namespace PortfolioApi.Controllers
                 Roles = roles,
                 Token = token,
             });
+        }
+
+        [HttpPost("generate-hash")]
+        public async Task<IActionResult> GeneratePasswordHash([FromBody] GenerateHashRequest request)
+        {
+            var hasher = new PasswordHasher<ApplicationUser>();
+            var dummyUser = new ApplicationUser(); // Just for the hasher
+            var hash = hasher.HashPassword(dummyUser, request.Password);
+
+            return Ok(new { Hash = hash });
+        }
+
+        public class GenerateHashRequest
+        {
+            public string Password { get; set; } = default!;
         }
 
         private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
@@ -91,4 +109,7 @@ namespace PortfolioApi.Controllers
         public string Username { get; set; } = default!;
         public string Password { get; set; } = default!;
     }
+
+
+
 }

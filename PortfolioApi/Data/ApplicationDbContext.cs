@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using PortfolioApi.Models;
 
+
+
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -63,9 +65,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             new ApplicationUser
             {
                 Id = "00000000-0000-0000-0000-000000000001",
-                UserName = "admin",
-                NormalizedUserName = "ADMIN",
-                PasswordHash = "AQAAAAEAACcQAAAAEHPfA2XinY6qHZPThr97lr0vrjBjXJbgO5XvvBbuS0Q++VU3FDR6NgQ4c7WpruOzNg==", // admin123
+                UserName = "ckadmin",
+                NormalizedUserName = "CKADMIN",
+                PasswordHash = "AQAAAAIAAYagAAAAEM/3FzxDvGid1y+gVx1qEIxWj64Rqqlp3vqX5EOqN+pBFE0zzPaMZvBqC/y0c6DfIw==", 
                 SecurityStamp = "00000000-0000-0000-0000-0000000000AA"
             },
             new ApplicationUser
@@ -73,7 +75,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Id = "00000000-0000-0000-0000-000000000002",
                 UserName = "reader",
                 NormalizedUserName = "READER",
-                PasswordHash = "AQAAAAEAACcQAAAAEOG+srRNrPTnR4y2hvBowdppe2k6JMzU3OmGQoPu/zYtPR7KQWIRFwIGc8i6uY/QGQ==", // reader123
+                PasswordHash = "AQAAAAEAACcQAAAAEOG+srRNrPTnR4y2hvBowdppe2k6JMzU3OmGQoPu/zYtPR7KQWIRFwIGc8i6uY/QGQ==", 
                 SecurityStamp = "00000000-0000-0000-0000-0000000000BB"
             }
         );
