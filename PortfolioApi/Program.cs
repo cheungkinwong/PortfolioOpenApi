@@ -96,7 +96,7 @@ builder.Services.AddCors(options =>
             "http://localhost:5273",
             "http://cheungkinportfolioapi.runasp.net",
             "http://cheungkinportfoliovueclient.runasp.net",
-            "http://cheungkinportfolioreactclient.runasp.net"  
+            "http://cheungkinportfolioreactclient.runasp.net"
         )
         .AllowAnyHeader()
         .AllowAnyMethod();

@@ -48,9 +48,9 @@ public class CVController : Controller
     public IActionResult DownloadCv([FromServices] IWebHostEnvironment env)
     {
         var isDev = env.IsDevelopment();
-        var folder = isDev
-            ? Path.Combine(Directory.GetCurrentDirectory(), "files")
-            : Path.Combine(env.WebRootPath, "files");
+
+        var rootPath = env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+        var folder = Path.Combine(rootPath, "files");
 
         var filePath = Path.Combine(folder, "cv.pdf");
 
