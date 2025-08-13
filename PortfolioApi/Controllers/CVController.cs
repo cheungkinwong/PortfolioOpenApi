@@ -57,8 +57,6 @@ public class CVController : Controller
     {
         try
         {
-            var isDev = env.IsDevelopment();
-            var rootPath = env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             var folder = Path.Combine(env.ContentRootPath, "App_Data", "files");
 
             var filePath = Path.Combine(folder, "cv-cheungkinwong.pdf");
@@ -66,8 +64,9 @@ public class CVController : Controller
             if (!System.IO.File.Exists(filePath))
                 return NotFound("CV not found.");
 
-            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            return File(stream, "application/pdf", "cv-cheungkinwong.pdf");
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            Response.Headers.Add("Content-Disposition", "attachment; filename=\"cv-cheungkinwong.pdf\"");
+            return File(fileBytes, "application/pdf", "cv-cheungkinwong.pdf");
         }
         catch (Exception ex)
         {
