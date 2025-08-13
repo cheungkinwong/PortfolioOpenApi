@@ -67,7 +67,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Id = "00000000-0000-0000-0000-000000000001",
                 UserName = "ckadmin",
                 NormalizedUserName = "CKADMIN",
-                PasswordHash = "AQAAAAIAAYagAAAAEM/3FzxDvGid1y+gVx1qEIxWj64Rqqlp3vqX5EOqN+pBFE0zzPaMZvBqC/y0c6DfIw==", 
+                PasswordHash = "AQAAAAIAAYagAAAAEN/Z5iIqjwhmQDBuT395GsBBL2DFNRgcFCRoTBexJ/UL2wWif3oB+kD84F7VZWz4Yg==", 
                 SecurityStamp = "00000000-0000-0000-0000-0000000000AA"
             },
             new ApplicationUser

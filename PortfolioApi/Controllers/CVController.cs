@@ -29,19 +29,19 @@ public class CVController : Controller
 
             Directory.CreateDirectory(folder);
 
-            var existingCvPath = Path.Combine(folder, "cv.pdf");
+            var existingCvPath = Path.Combine(folder, "cv-cheungkinwong.pdf");
             if (System.IO.File.Exists(existingCvPath))
             {
                 System.IO.File.Delete(existingCvPath);
             }
 
-            var filePath = Path.Combine(folder, "cv.pdf");
+            var filePath = Path.Combine(folder, "cv-cheungkinwong.pdf");
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
 
-            return Ok(new { message = "CV uploaded successfully", path = "/files/cv.pdf" });
+            return Ok(new { message = "CV uploaded successfully", path = "/files/cv-cheungkinwong.pdf" });
         }
         catch (Exception ex)
         {
@@ -61,13 +61,13 @@ public class CVController : Controller
             var rootPath = env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             var folder = Path.Combine(env.ContentRootPath, "App_Data", "files");
 
-            var filePath = Path.Combine(folder, "cv.pdf");
+            var filePath = Path.Combine(folder, "cv-cheungkinwong.pdf");
 
             if (!System.IO.File.Exists(filePath))
                 return NotFound("CV not found.");
 
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            return File(stream, "application/pdf", "cv.pdf");
+            return File(stream, "application/pdf", "cv-cheungkinwong.pdf");
         }
         catch (Exception ex)
         {
